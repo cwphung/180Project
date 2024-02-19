@@ -51,3 +51,20 @@ button {
   color: rgb(1, 1, 1);
   text-decoration: underline;
 }
+
+.password-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50px; 
+  cursor: pointer;
+}
+
+input[type="password"], input[type="text"] {
+  padding-right: 30px; 
+}

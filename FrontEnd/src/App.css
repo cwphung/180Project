@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: center;
   color: black;
-  background-image: url('../Assets/welcomePage.jpg');  
+  background-image: url('./Components/Assets/welcomePage1.jpg');  
   background-size: cover;
   background-position: center; 
   background-repeat: no-repeat; 
@@ -70,5 +70,5 @@ input[type="password"], input[type="text"] {
 }
 
 .homeBackground {
-  background-image: url('../Assets/home.jpg'); /* Adjust the path as necessary */
+  background-image: url('./Components/Assets/homePage1.jpg'); 
 }

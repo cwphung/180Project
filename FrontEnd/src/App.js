@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import './Components/LoginSignup/LoginSignup.css';
+import './App.css';
 import Login from "./Components/LoginSignup/Login";
 import Register from "./Components/LoginSignup/Register";
 import Home from "./Components/HomePage/Home";
@@ -16,7 +16,6 @@ function App() {
     setIsLoggedIn(true); 
   };
 
-  // Determine the class for the App based on the login state
   const appClass = isLoggedIn ? "App homeBackground" : "App";
 
   return (

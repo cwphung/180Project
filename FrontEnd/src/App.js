@@ -3,8 +3,8 @@ import './App.css';
 import Login from "./Components/LoginSignup/Login";
 import Register from "./Components/LoginSignup/Register";
 import Home from "./Components/HomePage/Home";
-import PVE from "./Components/GameModes/PVE"; 
-import PVP from "./Components/GameModes/PVP"; 
+import PVE from "./Components/GameModes/PVEpage/PVE"; 
+import PVP from "./Components/GameModes/PVPpage/PVP"; 
 
 function App() {
   const [currentForm, setCurrentForm] = useState('login');
@@ -34,9 +34,9 @@ function App() {
       case 'home':
         return <Home onPageChange={handlePageChange} />;
       case 'PVE':
-        return <PVE />;
+        return <PVE onBackToHome={() => handlePageChange('home')} />;
       case 'PVP':
-        return <PVP />;
+        return <PVP onBackToHome={() => handlePageChange('home')} />;
       case 'quit':
         setIsLoggedIn(false);
         setCurrentForm('login');

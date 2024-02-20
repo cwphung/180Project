@@ -14,14 +14,13 @@ export default function Login(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        props.onLoginSuccess(); 
-        // if (!isValidEmail(email)) {
-        //     setEmailError('Please enter a valid email address.');
-        //     return;
-        // } else {
-        //     setEmailError(''); 
-        //     console.log(email);
-        // }
+        if (!isValidEmail(email)) {
+            setEmailError('Please enter a valid email address.');
+            return;
+        } else {
+            setEmailError(''); 
+            props.onLoginSuccess(); 
+        }
     };
 
     const handleEmailBlur = () => {

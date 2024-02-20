@@ -4,9 +4,8 @@ export const Login = (props) => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const [emailError, setEmailError] = useState(''); // State to store the email error message
+    const [emailError, setEmailError] = useState(''); 
 
-    // Function to validate email format
     const isValidEmail = (email) => {
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
@@ -16,16 +15,13 @@ export const Login = (props) => {
         e.preventDefault();
         if (!isValidEmail(email)) {
             setEmailError('Please enter a valid email address.');
-            // Optionally, you can return here to stop the form submission
             return;
         } else {
-            setEmailError(''); // Clear the error message if email is valid
+            setEmailError(''); 
             console.log(email);
-            // Proceed with the form submission or further validation here
         }
     };
 
-    // Optionally, validate email on blur (when the user leaves the email field)
     const handleEmailBlur = () => {
         if (!isValidEmail(email)) {
             setEmailError('Please enter a valid email address.');

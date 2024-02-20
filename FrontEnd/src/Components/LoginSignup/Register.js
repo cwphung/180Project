@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export const Register = (props) => {
+export default function Register(props) {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [confirmPass, setConfirmPass] = useState('');
@@ -76,7 +76,13 @@ export const Register = (props) => {
 
                 <div className="password-container">
                     <label htmlFor="password">Password</label>
-                    <input value={pass} onChange={(e) => setPass(e.target.value)} type={showPassword ? "text" : "password"} placeholder="At least 8 characters" id="password" />
+                    <input 
+                        value={pass} 
+                        onChange={(e) => setPass(e.target.value)} 
+                        type={showPassword ? "text" : "password"} 
+                        placeholder="At least 8 characters" 
+                        id="password" 
+                    />
                     <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
                         {showPassword ? "hide" : "show"}
                     </span>
@@ -84,7 +90,13 @@ export const Register = (props) => {
 
                 <div className="password-container">
                     <label htmlFor="confirmPassword">Confirm Password</label>
-                    <input value={confirmPass} onChange={(e) => setConfirmPass(e.target.value)} type={showConfirmPassword ? "text" : "password"} placeholder="Confirm your password" id="confirmPassword" />
+                    <input 
+                        value={confirmPass} 
+                        onChange={(e) => setConfirmPass(e.target.value)} 
+                        type={showConfirmPassword ? "text" : "password"} 
+                        placeholder="Confirm your password" 
+                        id="confirmPassword" 
+                    />
                     <span className="toggle-password" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
                         {showPassword ? "hide" : "show"}
                     </span>

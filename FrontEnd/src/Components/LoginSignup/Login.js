@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export const Login = (props) => {
+export default function Login(props) {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -13,13 +13,15 @@ export const Login = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!isValidEmail(email)) {
-            setEmailError('Please enter a valid email address.');
-            return;
-        } else {
-            setEmailError(''); 
-            console.log(email);
-        }
+        
+        props.onLoginSuccess(); 
+        // if (!isValidEmail(email)) {
+        //     setEmailError('Please enter a valid email address.');
+        //     return;
+        // } else {
+        //     setEmailError(''); 
+        //     console.log(email);
+        // }
     };
 
     const handleEmailBlur = () => {
@@ -38,7 +40,7 @@ export const Login = (props) => {
                 <input 
                     value={email} 
                     onChange={(e) => setEmail(e.target.value)}
-                    onBlur={handleEmailBlur} // Validate email on blur
+                    onBlur={handleEmailBlur} 
                     type="email" 
                     placeholder="youremail@gmail.com" 
                     id="email" 

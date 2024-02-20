@@ -59,14 +59,18 @@ export default function Register(props) {
             <h2>Register</h2>
             <form className="register-form" onSubmit={handleSubmit}>
                 <label htmlFor="name">Full name</label>
-                <input value={name} onChange={(e) => setName(e.target.value)} id="name" placeholder="Full Name" />
+                <input value={name} 
+                    onChange={(e) => setName(e.target.value)} 
+                    id="name" 
+                    placeholder="Full Name" 
+                />
                 {errors.name && <p className="error">{errors.name}</p>}
                 
                 <label htmlFor="Email">Email</label>
                 <input 
                     value={email} 
                     onChange={(e) => setEmail(e.target.value)}
-                    onBlur={handleEmailBlur} // Validate email on blur
+                    onBlur={handleEmailBlur} 
                     type="email" 
                     placeholder="youremail@gmail.com" 
                     id="email" 

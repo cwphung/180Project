@@ -1,4 +1,4 @@
-package com.register.emailverificationsystem;
+package com.register.email_verification_system;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;

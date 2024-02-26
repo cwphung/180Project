@@ -7,6 +7,9 @@ function PVE({ onBackToHome }) {
   const [userChoice, setUserChoice] = useState(null);
   const [computerChoice, setComputerChoice] = useState(null);
   const [result, setResult] = useState('');
+  const [messages, setMessages] = useState([]);
+  const [currentMessage, setCurrentMessage] = useState(''); 
+  const [isChatVisible, setIsChatVisible] = useState(true); 
 
   const getComputerChoice = () => {
     const randomChoice = choices[Math.floor(Math.random() * choices.length)];
@@ -31,6 +34,28 @@ function PVE({ onBackToHome }) {
     setUserChoice(choice);
     const gameResult = determineWinner(choice, computer);
     setResult(gameResult);
+    // Add game choices and results to the chat
+    sendMessage(`You chose ${choice} and the computer chose ${computer}. ${gameResult}`);
+  };
+
+  const sendMessage = (msg) => {
+    if (msg.trim() !== '') {
+      setMessages([...messages, msg]);
+      setCurrentMessage(''); 
+    }
+  };
+
+  const handleMessageChange = (event) => {
+    setCurrentMessage(event.target.value);
+  };
+
+  const handleSendMessage = (event) => {
+    event.preventDefault(); 
+    sendMessage(currentMessage);
+  };
+
+  const toggleChatVisibility = () => {
+    setIsChatVisible(!isChatVisible);
   };
 
   return (
@@ -45,8 +70,30 @@ function PVE({ onBackToHome }) {
       {userChoice && <p>Your choice: {userChoice}</p>}
       {computerChoice && <p>Computer's choice: {computerChoice}</p>}
       <p>{result}</p>
+  
+      <button onClick={toggleChatVisibility} className={`chat-toggle ${!isChatVisible ? 'chat-toggle-hidden' : ''}`}>
+        {isChatVisible ? 'Hide Chat' : 'AI assistant'}
+      </button>
+  
+      {isChatVisible && (
+        <div className="chat-box">
+          {messages.map((msg, index) => (
+            <p key={index}>{msg}</p>
+          ))}
+          <form onSubmit={handleSendMessage} className="message-form">
+            <input
+              type="text"
+              value={currentMessage}
+              onChange={handleMessageChange}
+              placeholder="Type a message..."
+            />
+            <button type="submit">Send</button>
+          </form>
+        </div>
+      )}
     </div>
   );
+  
 }
 
 export default PVE;

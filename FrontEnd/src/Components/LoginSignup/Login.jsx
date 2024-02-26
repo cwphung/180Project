@@ -56,7 +56,7 @@ export default function Login(props) {
                         id="password" 
                     />
                     <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
-                        {showPassword ? "hide" : "show"}
+                        {showPassword ? "Hide" : "Show"}
                     </span>
                 </div>
                 <button type="submit">Log In</button>

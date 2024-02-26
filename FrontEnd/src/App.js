@@ -30,8 +30,12 @@ function App() {
   };
 
   const handleVerificationComplete = () => {
-    setIsLoggedIn(true); // Assuming verification logs the user in
+    setIsLoggedIn(true); 
     setCurrentPage('home');
+  };
+
+  const handleBackToRegister = () => {
+    setCurrentForm('register');
   };
 
   const renderPage = () => {
@@ -42,7 +46,7 @@ function App() {
         case "register":
           return <Register onFormSwitch={toggleForm} onRegistrationSuccess={handleRegistrationSuccess} />;
         case "verification":
-          return <VerificationProcess onVerificationComplete={handleVerificationComplete} />;
+          return <VerificationProcess onVerificationComplete={handleVerificationComplete} onBackToRegister={handleBackToRegister} />;
         default:
           return <Login onFormSwitch={toggleForm} onLoginSuccess={handleLoginSuccess} />;
       }

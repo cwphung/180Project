@@ -49,10 +49,11 @@ export default function Register(props) {
         if (validateInputs()) {
             console.log('Form is valid');
             console.log(email, pass, name);
+            props.onRegistrationSuccess();
         } else {
             console.log('Form is invalid');
         }
-    }
+    };
 
     return (
         <div className="auth-form-container">

@@ -65,7 +65,7 @@ export default function Register(props) {
                     id="name" 
                     placeholder="Full Name" 
                 />
-                {errors.name && <p className="error">{errors.name}</p>}
+                {errors.name && <div style={{color: 'red'}}>{errors.name}</div>}
                 
                 <label htmlFor="Email">Email</label>
                 <input 
@@ -89,7 +89,7 @@ export default function Register(props) {
                         id="password" 
                     />
                     <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
-                        {showPassword ? "hide" : "show"}
+                        {showPassword ? "Hide" : "Show"}
                     </span>
                 </div>
 
@@ -103,9 +103,11 @@ export default function Register(props) {
                         id="confirmPassword" 
                     />
                     <span className="toggle-password" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
-                        {showPassword ? "hide" : "show"}
+                        {showConfirmPassword ? "Hide" : "Show"} 
                     </span>
+                    {errors.confirmPass && <div style={{color: 'red'}}>{errors.confirmPass}</div>}
                 </div>
+
 
                 <button type="submit">Sign Up</button>
             </form>

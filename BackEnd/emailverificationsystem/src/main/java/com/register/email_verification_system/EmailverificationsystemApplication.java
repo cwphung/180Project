@@ -20,7 +20,7 @@ public class EmailverificationsystemApplication {
 
     @EventListener(ApplicationReadyEvent.class)
     public void triggerMail() throws MessagingException {
-        String verificationCode = CodeGenerator.generateRandomCode(6); // Generate a 6 character long code
+        String verificationCode = CodeGenerator.generateRandomCode(6); 
 
         String emailBody = "Your verification code is: " + verificationCode;
 

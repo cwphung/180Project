@@ -44,9 +44,12 @@ function ChatBox({ onSendMessage, messages }) {
   return (
     <div className="chat-box">
       <div className="messages">
-        {messages.map((msg, index) => (
-          <p key={index}>{msg}</p> 
-        ))}
+      {messages.map((msg, index) => (
+        <React.Fragment key={index}>
+          <p>{msg}</p>
+          {index < messages.length - 1 && <hr className="hr-style" />}
+        </React.Fragment>
+      ))}
       </div>
       <form onSubmit={handleSendMessage} className="message-form">
         <input

@@ -34,7 +34,6 @@ function PVE({ onBackToHome }) {
         setUserChoice(choice);
         const gameResult = determineWinner(choice, computer);
         setResult(gameResult);
-        sendMessage(`You chose ${choice} and the computer chose ${computer}. ${gameResult}`);
     };
 
     const sendMessage = (msg) => {

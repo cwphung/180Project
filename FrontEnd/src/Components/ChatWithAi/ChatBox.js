@@ -8,11 +8,36 @@ function ChatBox({ onSendMessage, messages }) {
     setCurrentMessage(event.target.value);
   };
 
-  const handleSendMessage = (event) => {
+  const sendToBackend = async (message) => {
+    try {
+      const response = await fetch('http://127.0.0.1:3000/message', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: message }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      return data.message;
+    } catch (error) {
+      console.error('Error:', error);
+      return 'Error sending message to the backend';
+    }
+  };
+
+  const handleSendMessage = async (event) => {
     event.preventDefault();
     if (currentMessage.trim() !== '') {
-      onSendMessage(currentMessage);
+      const message = currentMessage;
       setCurrentMessage('');
+      onSendMessage(message);
+      const response = await sendToBackend(message);
+      onSendMessage(response);
     }
   };
 
@@ -37,4 +62,3 @@ function ChatBox({ onSendMessage, messages }) {
 }
 
 export default ChatBox;
-

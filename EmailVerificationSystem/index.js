@@ -19,6 +19,18 @@ const transporter = nodemailer.createTransport({
     },
 });
 
+const generateRandomCode = (length) => {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let code = '';
+    const random = () => Math.floor(Math.random() * characters.length);
+
+    while (code.length < length) {
+        code += characters[random()];
+    }
+
+    return code;
+};
+
 app.post('/register', async (req, res) => {
     const { email, password, name } = req.body;
 
@@ -30,16 +42,18 @@ app.post('/register', async (req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        console.log(`Registering user: ${name} with email: ${email}, hashed password: ${hashedPassword}`);
+        const securityCode = generateRandomCode(6); 
+
+        console.log(`Registering user: ${name} with email: ${email}, hashed password: ${hashedPassword}, security code: ${securityCode}`);
 
         await transporter.sendMail({
             from: process.env.EMAIL,
             to: email,
             subject: "Welcome to Our Service",
-            html: `<h1>Welcome, ${name}!</h1><p>Thank you for registering.</p>`,
+            html: `<h1>Welcome, ${name}!</h1><p>Thank you for registering. Your security code is ${securityCode}.</p>`,
         });
 
-        res.send({ message: 'Registration successful, email sent!' });
+        res.send({ message: 'Registration successful, email sent with security code!' });
     } catch (error) {
         console.error('Error during registration:', error);
         res.status(500).send('An error occurred during registration');

@@ -44,16 +44,36 @@ export default function Register(props) {
         return Object.keys(newErrors).length === 0;
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (validateInputs()) {
-            console.log('Form is valid');
-            console.log(email, pass, name);
-            props.onRegistrationSuccess();
+            try {
+                const response = await fetch('http://127.0.0.1:3000/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: pass,
+                        name: name,
+                    }),
+                });
+    
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+    
+                const data = await response.json();
+                props.onRegistrationSuccess();
+            } catch (error) {
+                console.error('Failed to register:', error);
+            }
         } else {
             console.log('Form is invalid');
         }
     };
+    
 
     return (
         <div className="auth-form-container">
@@ -115,4 +135,3 @@ export default function Register(props) {
         </div>
     )
 }
-

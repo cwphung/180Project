@@ -1,9 +1,10 @@
-require('dotenv').config(); 
+require('dotenv').config();
 const express = require('express');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const bcrypt = require('bcrypt'); 
+const bcrypt = require('bcrypt');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 
 const app = express();
 const port = 3000;
@@ -11,7 +12,7 @@ const port = 3000;
 app.use(bodyParser.json());
 app.use(cors());
 
-const activeCodes = {};
+const activeCodes = {}; 
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -20,6 +21,24 @@ const transporter = nodemailer.createTransport({
         pass: process.env.EMAIL_PASSWORD,
     },
 });
+
+const uri = process.env.MONGODB_URI;
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
+async function connectToMongoDB() {
+    try {
+        await client.connect();
+        console.log("Successfully connected to MongoDB.");
+    } catch (error) {
+        console.error("Error connecting to MongoDB:", error);
+    }
+}
 
 const generateRandomCode = (length) => {
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -40,19 +59,19 @@ app.post('/register', async (req, res) => {
         return res.status(400).send('Missing required fields');
     }
 
-    const saltRounds = 10; 
+    const saltRounds = 10;
     try {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        const securityCode = generateRandomCode(6); 
-        activeCodes[securityCode] = true; 
+        const securityCode = generateRandomCode(6);
+        activeCodes[securityCode] = { email, hashedPassword, name };
 
         console.log(`Registering user: ${name} with email: ${email}, hashed password: ${hashedPassword}, security code: ${securityCode}`);
 
         await transporter.sendMail({
             from: process.env.EMAIL,
             to: email,
-            subject: "Welcome to Our Service",
+            subject: "Verification Code",
             html: `<h1>Welcome, ${name}!</h1><p>Thank you for registering. Your security code is ${securityCode}.</p>`,
         });
 
@@ -63,10 +82,19 @@ app.post('/register', async (req, res) => {
     }
 });
 
-app.post('/verify', (req, res) => {
+app.post('/verify', async (req, res) => {
     const { code } = req.body;
     if (activeCodes[code]) {
+        const userInfo = activeCodes[code];
         delete activeCodes[code]; 
+
+        const usersCollection = client.db("userInfra").collection("users");
+        await usersCollection.insertOne({
+            email: userInfo.email,
+            password: userInfo.hashedPassword,
+            name: userInfo.name,
+        });
+
         res.send({ verified: true });
     } else {
         res.status(400).send({ verified: false, message: 'Incorrect or expired verification code.' });
@@ -75,4 +103,5 @@ app.post('/verify', (req, res) => {
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
+    connectToMongoDB();
 });

@@ -66,7 +66,7 @@ export default function Register(props) {
                                 : null;
 
                 if (!response.ok) {
-                    if (response.status === 400 || data && data.message === 'Email already registered') {
+                    if (response.status === 400 || (data && data.message === 'Email already registered')) {
                         setEmailError('This email is already registered.');
                     } else {
                         setEmailError('An error occurred. Please try again.');

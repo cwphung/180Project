@@ -52,6 +52,40 @@ const generateRandomCode = (length) => {
     return code;
 };
 
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body; 
+    if (!email || !password) {
+        console.log('Missing email or password')
+        return res.status(400).send('Missing email or password');
+    }
+
+    try {
+        await client.connect();
+        const usersCollection = client.db("userInfra").collection("users");
+
+        const user = await usersCollection.findOne({ email: email });
+        if (!user) {
+            console.log('User does not exist')
+            return res.status(404).send('User does not exist');
+        }
+
+        const match = await bcrypt.compare(password, user.password);
+        if (match) {
+            console.log('Login successful')
+            res.send({ message: 'Login successful' });
+        } else {
+            console.log('Password is incorrect')
+            res.status(401).send('Password is incorrect');
+        }
+    } catch (error) {
+        console.error('Error during login:', error);
+        res.status(500).send('An error occurred during login');
+    } finally {
+        await client.close();
+    }
+});
+
+
 app.post('/register', async (req, res) => {
     const { email, password, name } = req.body;
 

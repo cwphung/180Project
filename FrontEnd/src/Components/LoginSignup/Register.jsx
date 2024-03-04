@@ -64,7 +64,6 @@ export default function Register(props) {
                     throw new Error('Network response was not ok');
                 }
     
-                const data = await response.json();
                 props.onRegistrationSuccess();
             } catch (error) {
                 console.error('Failed to register:', error);

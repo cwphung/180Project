@@ -6,10 +6,12 @@ const cors = require('cors');
 const bcrypt = require('bcrypt'); 
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = 3000;
 
 app.use(bodyParser.json());
 app.use(cors());
+
+const activeCodes = {};
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -43,6 +45,7 @@ app.post('/register', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         const securityCode = generateRandomCode(6); 
+        activeCodes[securityCode] = true; 
 
         console.log(`Registering user: ${name} with email: ${email}, hashed password: ${hashedPassword}, security code: ${securityCode}`);
 
@@ -57,6 +60,16 @@ app.post('/register', async (req, res) => {
     } catch (error) {
         console.error('Error during registration:', error);
         res.status(500).send('An error occurred during registration');
+    }
+});
+
+app.post('/verify', (req, res) => {
+    const { code } = req.body;
+    if (activeCodes[code]) {
+        delete activeCodes[code]; 
+        res.send({ verified: true });
+    } else {
+        res.status(400).send({ verified: false, message: 'Incorrect or expired verification code.' });
     }
 });
 

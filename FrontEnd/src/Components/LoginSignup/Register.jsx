@@ -60,11 +60,18 @@ export default function Register(props) {
                     }),
                 });
     
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
     
-                props.onRegistrationSuccess();
+                const data = response.headers.get('Content-Type').includes('application/json') 
+                                ? await response.json() 
+                                : null;
+
+                if (!response.ok) {
+                    if (response.status === 400 || data && data.message === 'Email already registered') {
+                        setEmailError('This email is already registered.');
+                    } else {
+                        setEmailError('An error occurred. Please try again.');
+                    }
+                }
             } catch (error) {
                 console.error('Failed to register:', error);
             }
@@ -72,7 +79,6 @@ export default function Register(props) {
             console.log('Form is invalid');
         }
     };
-    
 
     return (
         <div className="auth-form-container">

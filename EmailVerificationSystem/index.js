@@ -59,8 +59,17 @@ app.post('/register', async (req, res) => {
         return res.status(400).send('Missing required fields');
     }
 
-    const saltRounds = 10;
     try {
+        await client.connect();
+        const usersCollection = client.db("userInfra").collection("users");
+
+        const existingUser = await usersCollection.findOne({ email: email });
+        if (existingUser) {
+            console.log('Existing User')
+            return res.status(400).send('Email already registered');
+        }
+
+        const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         const securityCode = generateRandomCode(6);
@@ -79,8 +88,11 @@ app.post('/register', async (req, res) => {
     } catch (error) {
         console.error('Error during registration:', error);
         res.status(500).send('An error occurred during registration');
+    } finally {
+        await client.close();
     }
 });
+
 
 app.post('/verify', async (req, res) => {
     const { code } = req.body;

@@ -71,6 +71,8 @@ export default function Register(props) {
                     } else {
                         setEmailError('An error occurred. Please try again.');
                     }
+                } else {
+                    props.onRegistrationSuccess();
                 }
             } catch (error) {
                 console.error('Failed to register:', error);

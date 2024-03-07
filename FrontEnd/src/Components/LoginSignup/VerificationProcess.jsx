@@ -12,9 +12,9 @@ export default function VerificationProcess({ onVerificationComplete, onBackToRe
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     try {
-      const response = await fetch('http://localhost:3000/verify', {
+      const response = await fetch('http://127.0.0.1:3000/verify', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

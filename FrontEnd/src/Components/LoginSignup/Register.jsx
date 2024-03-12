@@ -44,12 +44,39 @@ export default function Register(props) {
         return Object.keys(newErrors).length === 0;
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (validateInputs()) {
-            console.log('Form is valid');
-            console.log(email, pass, name);
-            props.onRegistrationSuccess();
+            try {
+                const response = await fetch('http://127.0.0.1:3000/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: pass,
+                        name: name,
+                    }),
+                });
+    
+    
+                const data = response.headers.get('Content-Type').includes('application/json') 
+                                ? await response.json() 
+                                : null;
+
+                if (!response.ok) {
+                    if (response.status === 400 || (data && data.message === 'Email already registered')) {
+                        setEmailError('This email is already registered.');
+                    } else {
+                        setEmailError('An error occurred. Please try again.');
+                    }
+                } else {
+                    props.onRegistrationSuccess();
+                }
+            } catch (error) {
+                console.error('Failed to register:', error);
+            }
         } else {
             console.log('Form is invalid');
         }
@@ -115,4 +142,3 @@ export default function Register(props) {
         </div>
     )
 }
-

@@ -10,27 +10,40 @@ export default function VerificationProcess({ onVerificationComplete, onBackToRe
     setVerificationError(''); 
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    
-    // Simulated verification logic
-    const correctCode = "123456"; // Example correct code
-    if (verificationCode === correctCode) {
-      console.log('Verification successful');
-      onVerificationComplete(); 
-    } else {
-      console.log('Verification failed');
-      setVerificationError('Verification code is incorrect. Please try again.'); 
+
+    try {
+      const response = await fetch('http://127.0.0.1:3000/verify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code: verificationCode }),
+      });
+
+      const data = await response.json();
+
+      if (data.verified) {
+        console.log('Verification successful');
+        onVerificationComplete(); 
+      } else {
+        console.log('Verification failed', data.message);
+        setVerificationError('Verification code is incorrect. Please try again.'); 
+      }
+    } catch (error) {
+      console.error('Verification error:', error);
+      setVerificationError('An error occurred during verification. Please try again.'); 
     }
   };
 
   return (
     <div className="verification-container">
       <h2>Verification</h2>
-      <p>Please verify your email address.</p> 
+      <p>Please verify your email address.</p>
       <p>Check your inbox for a verification email and enter the code below.</p>
       <form onSubmit={handleSubmit}>
-        <div className="form-row"> 
+        <div className="form-row">
           <input
             type="text"
             value={verificationCode}

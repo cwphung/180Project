@@ -122,9 +122,7 @@ app.post('/register', async (req, res) => {
     } catch (error) {
         console.error('Error during registration:', error);
         res.status(500).send('An error occurred during registration');
-    } finally {
-        await client.close();
-    }
+    } 
 });
 
 

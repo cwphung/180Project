@@ -12,29 +12,30 @@ export default function VerificationProcess({ onVerificationComplete, onBackToRe
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    onVerificationComplete()
 
-    try {
-      const response = await fetch('http://127.0.0.1:3000/verify', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ code: verificationCode }),
-      });
+    // try {
+    //   const response = await fetch('http://127.0.0.1:3000/verify', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({ code: verificationCode }),
+    //   });
 
-      const data = await response.json();
+    //   const data = await response.json();
 
-      if (data.verified) {
-        console.log('Verification successful');
-        onVerificationComplete(); 
-      } else {
-        console.log('Verification failed', data.message);
-        setVerificationError('Verification code is incorrect. Please try again.'); 
-      }
-    } catch (error) {
-      console.error('Verification error:', error);
-      setVerificationError('An error occurred during verification. Please try again.'); 
-    }
+    //   if (data.verified) {
+    //     console.log('Verification successful');
+    //     onVerificationComplete(); 
+    //   } else {
+    //     console.log('Verification failed', data.message);
+    //     setVerificationError('Verification code is incorrect. Please try again.'); 
+    //   }
+    // } catch (error) {
+    //   console.error('Verification error:', error);
+    //   setVerificationError('An error occurred during verification. Please try again.'); 
+    // }
   };
 
   return (

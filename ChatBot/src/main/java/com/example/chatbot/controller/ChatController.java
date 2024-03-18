@@ -12,7 +12,7 @@ public class ChatController {
         RestTemplate restTemplate = new RestTemplate();
         String url = "https://api.openai.com/v1/chat/completions";
 
-        String apiKey = "Bearer API key";
+        String apiKey = "Bearer YOUR API_KEY";
         
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

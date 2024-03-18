@@ -15,6 +15,39 @@ from utils import CvFpsCalc
 from model import KeyPointClassifier
 from model import PointHistoryClassifier
 
+import paho.mqtt.client as mqtt
+import time
+
+
+# 0. define callbacks - functions that run when events happen.
+# The callback for when the client receives a CONNACK response from the server.
+def on_connect(client, userdata, flags, rc):
+    print("Connection returned result: " + str(rc))
+    # Subscribing in on_connect() means that if we lose the connection and
+    # reconnect then subscriptions will be renewed.
+    client.subscribe("ece180d/pokemon/test/#", qos=1)
+
+# The callback of the client when it disconnects.
+def on_disconnect(client, userdata, rc):
+    if rc != 0:
+        print('Unexpected Disconnect')
+    else:
+        print('Expected Disconnect')
+              
+# 1. create a client instance.
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
+# add additional client options (security, certifications, etc.)
+# many default options should be good to start off.
+# add callbacks to client.
+client.on_connect = on_connect
+client.on_disconnect = on_disconnect
+# 2. connect to a broker using one of the connect*() functions.
+# client.connect_async("test.mosquitto.org")
+client.connect_async('mqtt.eclipseprojects.io')
+# client.connect("test.mosquitto.org", 1883, 60)
+# client.connect("mqtt.eclipse.org")
+# 3. call one of the loop*() functions to maintain network traffic flow with the broker.
+client.loop_start()
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -97,12 +130,15 @@ def main():
 
     #  ########################################################################
     mode = 0
-
+    currentGesture = "nothing"
     while True:
         fps = cvFpsCalc.get()
 
         # Process Key (ESC: end) #################################################
         key = cv.waitKey(10)
+        if key == 32:  # SPACE
+            print('Transmitting: ' + currentGesture)
+            client.publish("ece180d/pokemon/test/", currentGesture, qos=1)
         if key == 27:  # ESC
             break
         number, mode = select_mode(key, mode)
@@ -141,10 +177,26 @@ def main():
 
                 # Hand sign classification
                 hand_sign_id = keypoint_classifier(pre_processed_landmark_list)
-                if hand_sign_id == 2:  # Point gesture
+                match hand_sign_id:
+                    case 0:
+                        currentGesture = "Up"
+                    case 1:
+                        currentGesture = "Down"
+                    case 2:
+                        currentGesture = "Left"
+                    case 3:
+                        currentGesture = "Right"
+                    case 4:
+                        currentGesture = "A"
+                    case 5:
+                        currentGesture = "B"
+                    case 6:
+                        currentGesture = "Select"
+                      
+                #if hand_sign_id == 2:  # Point gesture
                 #    point_history.append(landmark_list[8])
                 #else:
-                    point_history.append([0, 0])
+                #    point_history.append([0, 0])
 
                 # Finger gesture classification
                 finger_gesture_id = 0

@@ -14,46 +14,45 @@ export default function Login(props) {
 
 const handleSubmit = async (e) => {
     e.preventDefault();
-    props.onLoginSuccess();
-
-    // if (!isValidEmail(email)) {
-    //     setEmailError('Please enter a valid email address.');
-    //     return;
-    // }
     
-    // setEmailError('');
-    // setLoginError('');
+    if (!isValidEmail(email)) {
+        setEmailError('Please enter a valid email address.');
+        return;
+    }
+    
+    setEmailError('');
+    setLoginError('');
 
-    // try {
-    //     const response = await fetch('http://127.0.0.1:3000/login', { 
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({ email, password: pass }),
-    //     });
+    try {
+        const response = await fetch('http://127.0.0.1:3000/login', { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password: pass }),
+        });
 
-    //     const data = response.headers.get('Content-Type').includes('application/json') 
-    //             ? await response.json() 
-    //             : null;
+        const data = response.headers.get('Content-Type').includes('application/json') 
+                ? await response.json() 
+                : null;
 
-    //     if (response.ok) {
-    //         props.onLoginSuccess();
-    //     } else {
-    //         if (response.status === 400 || (data && data.message === 'Missing email or password')) {
-    //             setLoginError('Missing email or password');
-    //         } else if (response.status === 404 || (data && data.message === 'User does not exist')) {
-    //             setLoginError('User does not exist');
-    //         } else if (response.status === 401 || (data && data.message === 'Password is incorrect')) {
-    //             setLoginError('Password is incorrect');
-    //         } else {
-    //             setLoginError('An error occurred during login');
-    //         }
-    //     }
-    // } catch (error) {
-    //     console.error('Login failed:', error);
-    //     setLoginError('An error occurred. Please try again later.');
-    // }
+        if (response.ok) {
+            props.onLoginSuccess();
+        } else {
+            if (response.status === 400 || (data && data.message === 'Missing email or password')) {
+                setLoginError('Missing email or password');
+            } else if (response.status === 404 || (data && data.message === 'User does not exist')) {
+                setLoginError('User does not exist');
+            } else if (response.status === 401 || (data && data.message === 'Password is incorrect')) {
+                setLoginError('Password is incorrect');
+            } else {
+                setLoginError('An error occurred during login');
+            }
+        }
+    } catch (error) {
+        console.error('Login failed:', error);
+        setLoginError('An error occurred. Please try again later.');
+    }
 };
 
     const handleEmailBlur = () => {

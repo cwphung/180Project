@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ChatBox from '../../ChatWithAi/ChatBox';
 import "./PVE.css"; 
 
@@ -10,7 +10,7 @@ function PVE({ onBackToHome }) {
     const [result, setResult] = useState('');
     const [messages, setMessages] = useState([]);
     const [isChatVisible, setIsChatVisible] = useState(true);
-
+    
     const getComputerChoice = () => {
         const randomChoice = choices[Math.floor(Math.random() * choices.length)];
         setComputerChoice(randomChoice);

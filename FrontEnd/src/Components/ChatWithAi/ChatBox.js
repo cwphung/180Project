@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import './ChatBox.css'; 
 
 function ChatBox({ onSendMessage, messages }) { 
@@ -11,10 +10,22 @@ function ChatBox({ onSendMessage, messages }) {
 
   const sendToBackend = async (message) => {
     try {
-      const { data } = await axios.post('http://localhost:8080/api/chat', message);
-      return data.choices[0].message.content;
+      const response = await fetch('http://127.0.0.1:3001/message', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: message }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      return data.message;
     } catch (error) {
-      console.error("Error fetching reply:", error);
+      console.error('Error:', error);
       return 'Error sending message to the backend';
     }
   };

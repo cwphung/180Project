@@ -8,12 +8,28 @@
     cursor: pointer;
 }
 
+.gesture-control-button, .voice-control-button {
+    width: 150px; 
+    height: 50px; 
+    margin: 20px; 
+    padding: 10px; 
+    border: none; 
+    background-color: red; 
+    color: white; 
+    cursor: pointer; 
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
+    font-size: 16px; 
+}
+
 .pvp-container {
     display: flex;
     flex-direction: row;
-    align-items: stretch; /* Adjust based on your needs */
-    justify-content: stretch; /* This will make child elements fill the container */
-    background-image: url('../../Assets/gameMode1.jpg'); 
+    align-items: stretch; 
+    justify-content: stretch; 
+    background-image: url('../../Assets/loadingPage2.jpg'); 
     background-size: cover; 
     background-position: center; 
     min-height: 100vh;
@@ -21,13 +37,17 @@
 }
   
 .twitch-embed-container {
-    flex: 3; /* Takes up 3/4 of the space */
+    flex: 3; 
     display: flex;
-    align-items: center; /* Centers the embed vertically */
-    justify-content: center; /* Centers the embed horizontally */
+    align-items: center; 
+    justify-content: center; 
 }
   
 .rest-of-content {
-    flex: 1; /* Takes up 1/4 of the space */
+    flex: 1;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
 }
   

@@ -38,15 +38,27 @@ function PVP({ onBackToHome }) {
   
   }, []); 
 
+  const onGestureControl = () => {
+    console.log('Gesture control activated');
+  };
+
+  const onVoiceControl = () => {
+    console.log('Voice control activated');
+  };
+
   return (
     <div className="pvp-container">
       <div className="rest-of-content">
-        {/* Other content goes here */}
+        <button className="gesture-control-button" onClick={onGestureControl}>
+          Gesture Control
+        </button>
+        <button className="voice-control-button" onClick={onVoiceControl}>
+          Voice Control
+        </button>
       </div>
-      <div className="twitch-embed-container" id="twitch-embed">
-        {/* Twitch embed will go here */}
-      </div>
-        <button className="back-button" onClick={onBackToHome}>Back to Home</button>
+      <div className="twitch-embed-container" id="twitch-embed"></div>
+
+      <button className="back-button" onClick={onBackToHome}>Back to Home</button>
     </div>
   );
 }

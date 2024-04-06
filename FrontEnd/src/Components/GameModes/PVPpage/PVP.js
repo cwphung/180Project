@@ -13,8 +13,8 @@ function PVP({ onBackToHome }) {
         }
 
         new window.Twitch.Embed("twitch-embed", {
-          width: 854,
-          height: 480,
+          width: "100%",
+          height: "100%",
           channel: "nihs_nooj",
           parent: ["localhost"]
         });
@@ -40,9 +40,13 @@ function PVP({ onBackToHome }) {
 
   return (
     <div className="pvp-container">
-      <h1>Twitch Stream</h1>
-      <div id="twitch-embed"></div>
-      <button className="back-button" onClick={onBackToHome}>Back to Home</button>
+      <div className="rest-of-content">
+        {/* Other content goes here */}
+      </div>
+      <div className="twitch-embed-container" id="twitch-embed">
+        {/* Twitch embed will go here */}
+      </div>
+        <button className="back-button" onClick={onBackToHome}>Back to Home</button>
     </div>
   );
 }

@@ -9,14 +9,25 @@
 }
 
 .pvp-container {
-    position: relative;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    flex-direction: row;
+    align-items: stretch; /* Adjust based on your needs */
+    justify-content: stretch; /* This will make child elements fill the container */
     background-image: url('../../Assets/gameMode1.jpg'); 
     background-size: cover; 
     background-position: center; 
     min-height: 100vh;
-    width: 100%; 
+    width: 100%;
 }
+  
+.twitch-embed-container {
+    flex: 3; /* Takes up 3/4 of the space */
+    display: flex;
+    align-items: center; /* Centers the embed vertically */
+    justify-content: center; /* Centers the embed horizontally */
+}
+  
+.rest-of-content {
+    flex: 1; /* Takes up 1/4 of the space */
+}
+  

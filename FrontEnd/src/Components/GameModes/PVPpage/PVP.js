@@ -4,18 +4,20 @@ import "./PVP.css";
 function PVP({ onBackToHome }) {
   useEffect(() => {
     const embedTwitch = () => {
-      if (window.Twitch && window.Twitch.Embed) {
-        const existingEmbed = document.getElementById("twitch-embed");
-        if (existingEmbed) {
-          while (existingEmbed.firstChild) {
-            existingEmbed.removeChild(existingEmbed.firstChild);
+      if (window.Twitch && window.Twitch.Player) {
+        const playerDivId = "twitch-embed";
+        const existingPlayer = document.getElementById(playerDivId);
+        if (existingPlayer) {
+          while (existingPlayer.firstChild) {
+            existingPlayer.removeChild(existingPlayer.firstChild);
           }
         }
 
-        new window.Twitch.Embed("twitch-embed", {
+        new window.Twitch.Player(playerDivId, {
           width: "100%",
           height: "100%",
           channel: "nihs_nooj",
+          volume: 0.5,
           parent: ["localhost"]
         });
       }
@@ -57,7 +59,8 @@ function PVP({ onBackToHome }) {
         </button>
       </div>
       <div className="twitch-embed-container" id="twitch-embed"></div>
-
+      <div className="rest-of-content">
+      </div>
       <button className="back-button" onClick={onBackToHome}>Back to Home</button>
     </div>
   );

@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import "./PVP.css";
 
-function PVP({ onBackToHome }) {
+function PVP({ username, onBackToHome }) {
   useEffect(() => {
+    console.log('PVP Page loaded with username:', username);  
     const embedTwitch = () => {
       if (window.Twitch && window.Twitch.Player) {
         const playerDivId = "twitch-embed";
@@ -38,7 +39,7 @@ function PVP({ onBackToHome }) {
   
     script.onload = () => embedTwitch();
   
-  }, []); 
+  }, [username]); 
 
   const onGestureControl = () => {
     console.log('Gesture control activated');
@@ -49,7 +50,7 @@ function PVP({ onBackToHome }) {
   };
 
   return (
-    <div className="pvp-container">
+    <div className="pvp-container"> 
       <div className="rest-of-content">
         <button className="gesture-control-button" onClick={onGestureControl}>
           Gesture Control

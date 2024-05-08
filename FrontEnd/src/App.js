@@ -11,6 +11,7 @@ function App() {
   const [currentForm, setCurrentForm] = useState('login');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentPage, setCurrentPage] = useState('home'); 
+  const [username, setUsername] = useState('');  
 
   const toggleForm = (formName) => {
     setCurrentForm(formName);
@@ -20,18 +21,20 @@ function App() {
     setCurrentForm('verification');
   };
   
-  const handleLoginSuccess = () => {
+  const handleLoginSuccess = (username) => {
     setIsLoggedIn(true);
-    setCurrentPage('home'); 
-  };
+    setCurrentPage('home');
+    setUsername(username);
+};
 
   const handlePageChange = (page) => {
     setCurrentPage(page); 
   };
 
-  const handleVerificationComplete = () => {
+  const handleVerificationComplete = (username) => {
     setIsLoggedIn(true); 
     setCurrentPage('home');
+    setUsername(username);
   };
 
   const handleBackToRegister = () => {
@@ -57,7 +60,7 @@ function App() {
         case 'PVE':
           return <PVE onBackToHome={() => handlePageChange('home')} />;
         case 'PVP':
-          return <PVP onBackToHome={() => handlePageChange('home')} />;
+          return <PVP username={username} onBackToHome={() => handlePageChange('home')} />;  
         case 'quit':
           setIsLoggedIn(false);
           setCurrentForm('login');

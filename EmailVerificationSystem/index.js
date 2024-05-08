@@ -68,11 +68,12 @@ app.post('/login', async (req, res) => {
             console.log('User does not exist')
             return res.status(404).send('User does not exist');
         }
-
+        
         const match = await bcrypt.compare(password, user.password);
         if (match) {
             console.log('Login successful')
-            res.send({ message: 'Login successful' });
+            console.log(user.name)
+            res.send({ username: user.name }); 
         } else {
             console.log('Password is incorrect')
             res.status(401).send('Password is incorrect');
@@ -115,7 +116,7 @@ app.post('/register', async (req, res) => {
             subject: "Verification Code",
             html: `<h1>Welcome, ${name}!</h1><p>Thank you for registering. Your security code is ${securityCode}.</p>`,
         });
-
+        
         res.send({ message: 'Registration successful, email sent with security code!' });
     } catch (error) {
         console.error('Error during registration:', error);
@@ -136,8 +137,8 @@ app.post('/verify', async (req, res) => {
             password: userInfo.hashedPassword,
             name: userInfo.name,
         });
-
-        res.send({ verified: true });
+        console.log(userInfo.name)
+        res.send({ verified: true, username: userInfo.name });
     } else {
         res.status(400).send({ verified: false, message: 'Incorrect or expired verification code.' });
     }

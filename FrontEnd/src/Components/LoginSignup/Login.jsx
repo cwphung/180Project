@@ -37,7 +37,9 @@ const handleSubmit = async (e) => {
                 : null;
 
         if (response.ok) {
-            props.onLoginSuccess();
+            const username = data.username;
+            console.log('Fetched username:', username);
+            props.onLoginSuccess(username);
         } else {
             if (response.status === 400 || (data && data.message === 'Missing email or password')) {
                 setLoginError('Missing email or password');

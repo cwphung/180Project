@@ -25,8 +25,8 @@ export default function VerificationProcess({ onVerificationComplete, onBackToRe
       const data = await response.json();
 
       if (data.verified) {
-        console.log('Verification successful');
-        onVerificationComplete(); 
+        console.log('Verification successful, username:', data.username);
+        onVerificationComplete(data.username);  
       } else {
         console.log('Verification failed', data.message);
         setVerificationError('Verification code is incorrect. Please try again.'); 

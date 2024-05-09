@@ -1,53 +1,65 @@
 .back-button {
-    position: fixed; 
+    position: fixed;
     top: 10px;
     left: 10px;
-    padding: 10px;
+    padding: 12px 20px; 
     border: none;
     background-color: #f0f0f0;
+    color: #333; 
+    font-size: 16px; 
+    font-weight: bold; 
+    border-radius: 8px; 
     cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
 }
 
 .gesture-control-button, .voice-control-button {
-    width: 150px; 
-    height: 50px; 
-    margin: 20px; 
-    padding: 10px; 
-    border: none; 
-    background-color: red; 
-    color: white; 
-    cursor: pointer; 
+    width: 150px;
+    height: 50px;
+    margin: 20px;
+    padding: 10px;
+    border: none;
+    background-color: red;
+    color: white;
+    cursor: pointer;
     display: flex;
-    justify-content: center; 
-    align-items: center; 
-    text-align: center; 
-    font-size: 16px; 
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.gesture-control-button:hover, .voice-control-button:hover {
+    background-color: #cc0000;
 }
 
 .pvp-container {
     display: flex;
     flex-direction: row;
-    align-items: stretch; 
-    justify-content: stretch; 
-    background-image: url('../../Assets/loadingPage2.jpg'); 
-    background-size: cover; 
-    background-position: center; 
+    align-items: stretch;
+    justify-content: stretch;
+    background-image: url('../../Assets/loadingPage2.jpg');
+    background-size: cover;
+    background-position: center;
     min-height: 100vh;
     width: 100%;
+    overflow: hidden; 
 }
-  
+
 .twitch-embed-container {
-    flex: 2; 
+    flex: 2;
     display: flex;
-    align-items: center; 
-    justify-content: center; 
+    align-items: center;
+    justify-content: center;
+    padding: 20px; 
 }
-  
+
 .rest-of-content {
     flex: 1;
     display: flex;
-    flex-direction: column; 
-    justify-content: center; 
-    align-items: center; 
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
 }
-  

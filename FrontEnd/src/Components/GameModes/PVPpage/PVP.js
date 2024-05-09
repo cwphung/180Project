@@ -1,7 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./PVP.css";
 
 function PVP({ username, onBackToHome }) {
+  const [input, setInput] = useState('');
+  const [messages, setMessages] = useState([]);
+
   useEffect(() => {
     console.log('PVP Page loaded with username:', username);  
     const embedTwitch = () => {
@@ -49,6 +52,32 @@ function PVP({ username, onBackToHome }) {
     console.log('Voice control activated');
   };
 
+  const handleInputChange = (event) => {
+    setInput(event.target.value);
+  };
+
+  const handleSubmit = () => {
+    if (input.trim() !== '') {
+        const formattedMessage = `${username}: ${input}`;
+        setMessages(prevMessages => {
+            const updatedMessages = [...prevMessages, formattedMessage];
+            if (updatedMessages.length > 30) {
+                return updatedMessages.slice(-30); 
+            }
+            return updatedMessages;
+        });
+        setInput(''); 
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (['w', 'a', 's', 'd'].includes(e.key.toLowerCase())) {
+        handleSubmit(); 
+    } else {
+        e.preventDefault(); 
+    }
+  }
+
   return (
     <div className="pvp-container"> 
       <div className="rest-of-content">
@@ -61,6 +90,23 @@ function PVP({ username, onBackToHome }) {
       </div>
       <div className="twitch-embed-container" id="twitch-embed"></div>
       <div className="rest-of-content">
+        
+        <div className="chat-container">
+          <div className="messages">
+              {messages.map((message, index) => (
+                  <div key={index} className="message">{message}</div>
+              ))}
+          </div>
+          <input 
+              type="text" 
+              value={input}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyDown} 
+              placeholder="Type here..." 
+              className="chat-input"
+          />
+        </div>
+
       </div>
       <button className="back-button" onClick={onBackToHome}>Back to Home</button>
     </div>

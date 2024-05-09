@@ -63,6 +63,10 @@ function nomatch() {
 // Define the recognition error event handler
 recognition.onerror = function(event) {
     console.error('Speech recognition error:', event.error);
+    if (event.error == "no-speech")
+        // Display error
+        document.getElementById('result').textContent = "No speech detected.";
+
 };
 
 // Function to start speech recognition
@@ -70,10 +74,12 @@ function startRecognition() {
     // Start speech recognition
     recognition.start();
 
-    //doesnt work currently
-    // setTimeout(function() {
-    //     recognition.stop();
-    //   }, 2000);
+    //stop recognition after 2 seconds (modifiable)
+    //currently doesn't print anything if no speech is detected, might want to include that
+    //without this, continuous speech drastically slows it down
+    setTimeout(function() {
+        recognition.stop();
+      }, 2000);
 }
   
   // Add event listener to the button

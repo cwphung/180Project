@@ -48,12 +48,12 @@
 }
 
 .twitch-embed-container {
-    flex: 2;
+    flex: 2.3;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px; 
 }
+
 
 .rest-of-content {
     flex: 1;
@@ -63,3 +63,36 @@
     align-items: center;
     padding: 20px;
 }
+
+.chat-container {
+    position: fixed;   
+    right: 0;          
+    width: 25%;        
+    height: 100%;      
+    background-color: white; 
+    display: flex;     
+    flex-direction: column; 
+    justify-content: space-between; 
+    overflow: auto;    
+}
+
+.header {
+    padding: 10px;     
+    background-color: #f0f0f0; 
+}
+
+.messages {
+    flex-grow: 1;      
+    padding: 10px;
+}
+
+.message {
+    margin-bottom: 10px; 
+}
+
+.chat-input {
+    padding: 10px;     
+    border: 5px solid #ccc; 
+    margin: 10px 20px; 
+}
+

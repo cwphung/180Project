@@ -61,8 +61,8 @@ function PVP({ username, onBackToHome }) {
         const formattedMessage = `${username}: ${input}`;
         setMessages(prevMessages => {
             const updatedMessages = [...prevMessages, formattedMessage];
-            if (updatedMessages.length > 30) {
-                return updatedMessages.slice(-30); 
+            if (updatedMessages.length > 25) {
+                return updatedMessages.slice(-25); 
             }
             return updatedMessages;
         });
@@ -92,6 +92,10 @@ function PVP({ username, onBackToHome }) {
       <div className="rest-of-content">
         
         <div className="chat-container">
+          <div className="header">
+              <h1>Pokemon</h1>
+              <div className="clock">00:00</div>
+          </div>
           <div className="messages">
               {messages.map((message, index) => (
                   <div key={index} className="message">{message}</div>

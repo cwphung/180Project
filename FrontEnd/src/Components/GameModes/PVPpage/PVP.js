@@ -4,6 +4,7 @@ import "./PVP.css";
 function PVP({ username, onBackToHome }) {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
+  const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
     console.log('PVP Page loaded with username:', username);  
@@ -43,6 +44,21 @@ function PVP({ username, onBackToHome }) {
     script.onload = () => embedTwitch();
   
   }, [username]); 
+
+  const formatTime = (totalSeconds) => {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+        setSeconds(seconds => seconds + 1);
+    }, 1000);
+
+    // Clear interval on component unmount
+    return () => clearInterval(interval);
+  }, []);
 
   const onGestureControl = () => {
     console.log('Gesture control activated');
@@ -94,7 +110,7 @@ function PVP({ username, onBackToHome }) {
         <div className="chat-container">
           <div className="header">
               <h1>Pokemon</h1>
-              <div className="clock">00:00</div>
+              <div className="clock">{formatTime(seconds)}</div>
           </div>
           <div className="messages">
               {messages.map((message, index) => (

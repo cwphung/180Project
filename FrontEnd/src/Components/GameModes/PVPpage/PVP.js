@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import io from 'socket.io-client';
 import "./PVP.css";
 
 function PVP({ username, onBackToHome }) {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [seconds, setSeconds] = useState(0);
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    console.log('PVP Page loaded with username:', username);  
     const embedTwitch = () => {
       if (window.Twitch && window.Twitch.Player) {
         const playerDivId = "twitch-embed";
@@ -45,20 +46,37 @@ function PVP({ username, onBackToHome }) {
   
   }, [username]); 
 
-  const formatTime = (totalSeconds) => {
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  };
-
   useEffect(() => {
     const interval = setInterval(() => {
         setSeconds(seconds => seconds + 1);
     }, 1000);
 
-    // Clear interval on component unmount
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    const newSocket = io('http://localhost:4000'); 
+    setSocket(newSocket);
+
+    const handleMessage = (message) => {
+      setMessages(prevMessages => {
+        return [...prevMessages, message].slice(-18);
+      });    
+    };
+
+    newSocket.on('message', handleMessage);
+
+    return () => {
+        newSocket.off('message', handleMessage);
+        newSocket.close();
+    };
+  }, []);
+
+  const formatTime = (totalSeconds) => {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
 
   const onGestureControl = () => {
     console.log('Gesture control activated');
@@ -74,15 +92,9 @@ function PVP({ username, onBackToHome }) {
 
   const handleSubmit = () => {
     if (input.trim() !== '') {
-        const formattedMessage = `${username}: ${input}`;
-        setMessages(prevMessages => {
-            const updatedMessages = [...prevMessages, formattedMessage];
-            if (updatedMessages.length > 25) {
-                return updatedMessages.slice(-25); 
-            }
-            return updatedMessages;
-        });
-        setInput(''); 
+      const formattedMessage = `${username}: ${input}`;
+      socket.emit('message', formattedMessage);
+      setInput(''); 
     }
   };
 

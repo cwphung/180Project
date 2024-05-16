@@ -56,11 +56,13 @@ function PVP({ username, onBackToHome }) {
 
   useEffect(() => {
     const newSocket = io('http://localhost:4000'); 
+    setMessages([]); 
     setSocket(newSocket);
 
     const handleMessage = (message) => {
       setMessages(prevMessages => {
-        return [...prevMessages, message].slice(-18);
+        const newMessages = [...prevMessages, message].slice(-18);
+        return newMessages;
       });    
     };
 
@@ -93,7 +95,11 @@ function PVP({ username, onBackToHome }) {
   const handleSubmit = () => {
     if (input.trim() !== '') {
       const formattedMessage = `${username}: ${input}`;
-      socket.emit('message', formattedMessage);
+      setMessages(prevMessages => {
+        const updatedMessages = [...prevMessages, formattedMessage];
+        return updatedMessages.slice(-18); 
+      });
+      socket.emit('message', formattedMessage); 
       setInput(''); 
     }
   };

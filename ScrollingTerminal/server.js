@@ -34,17 +34,6 @@ const CHAT_HISTORY_KEY = 'chatHistory';
 io.on('connection', (socket) => {
     console.log('New client connected, socket id:', socket.id);
 
-    redisClient.lRange(CHAT_HISTORY_KEY, 0, -1)
-        .then(messages => {
-            console.log(`Sending ${messages.length} past messages to new client`);
-            messages.forEach((message) => {
-                socket.emit('message', message);
-            });
-        })
-        .catch(err => {
-            console.error('Error retrieving messages from Redis:', err);
-        });
-
     socket.on('message', (message) => {
         console.log(`Received message from ${socket.id}: ${message}`);
         socket.broadcast.emit('message', message);  
